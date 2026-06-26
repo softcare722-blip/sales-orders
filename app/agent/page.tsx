@@ -339,12 +339,14 @@ export default function AgentPage() {
                       patchOrder({ action: "remove_item", item_id: itemId })
                     }
                     editable={historyOrder.status === "submitted"}
-                    onUpdate={(itemId, quantity, unitPrice) =>
+                    onUpdate={(itemId, quantity, quantityText, unitPrice, unitPriceText) =>
                       patchOrder({
                         action: "update_item",
                         item_id: itemId,
                         quantity,
+                        quantity_text: quantityText,
                         unit_price: unitPrice,
+                        unit_price_text: unitPriceText,
                       })
                     }
                     busy={busy}
