@@ -206,10 +206,22 @@ export async function PATCH(request: NextRequest) {
       item.quantity = quantity;
     }
 
+    // FIXED: Also save quantity_text so "5+1" is preserved
+    if (body.quantity_text !== undefined) {
+      const quantityText = String(body.quantity_text ?? "").trim() || null;
+      item.quantity_text = quantityText;
+    }
+
     if (body.unit_price !== undefined) {
       const price = Number(body.unit_price);
       if (isNaN(price) || price < 0) return error("Çmimi i pavlefshëm");
       item.unit_price = price;
+    }
+
+    // FIXED: Also save unit_price_text so custom prices are preserved
+    if (body.unit_price_text !== undefined) {
+      const unitPriceText = String(body.unit_price_text ?? "").trim() || null;
+      item.unit_price_text = unitPriceText;
     }
 
     touchOrder(orderId);
