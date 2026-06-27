@@ -356,29 +356,41 @@ export default function ManagerPage() {
     }
   }
 
-  async function updateItem(itemId: number, quantity: number, unitPrice: number) {
-    if (!selectedId) return;
-    setBusy(true);
-    try {
-      await fetch("/api/orders", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          order_id: selectedId,
-          action: "update_item",
-          item_id: itemId,
-          quantity,
-          unit_price: unitPrice,
-        }),
-      });
-      await loadOrderDetail(selectedId);
-      await loadLogs(selectedId);
-      await loadOrders(filter);
-    } finally {
-      setBusy(false);
-    }
-  }
+  async function updateItem(
+  itemId: number,
+  quantity: number,
+  quantityText: string,
+  unitPrice: number,
+  unitPriceText: string
+) {
+  if (!selectedId) return;
 
+  setBusy(true);
+
+  try {
+    await fetch("/api/orders", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order_id: selectedId,
+        action: "update_item",
+        item_id: itemId,
+        quantity,
+        quantity_text: quantityText,
+        unit_price: unitPrice,
+        unit_price_text: unitPriceText,
+      }),
+    });
+
+    await loadOrderDetail(selectedId);
+    await loadLogs(selectedId);
+    await loadOrders(filter);
+  } finally {
+    setBusy(false);
+  }
+}
   async function removeItem(itemId: number) {
     if (!selectedId) return;
     setBusy(true);
